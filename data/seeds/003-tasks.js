@@ -1,7 +1,7 @@
 exports.seed = function(knex) {
     // Deletes ALL existing entries
     return knex('tasks')
-        .del()
+        .truncate()
         .then(function() {
             // Inserts seed entries
             return knex('tasks').insert([
@@ -9,19 +9,19 @@ exports.seed = function(knex) {
                     project_id: 1,
                     desc: 'Step 1: Sweeping floor',
                     notes: 'Required:Broom',
-                    completed:false
+                    completed: false,
                 },
                 {
                     project_id: 1,
                     desc: 'Step 2: Vacuum Carpet',
                     notes: 'Required: Vacuum',
-                    completed:false
+                    completed: false,
                 },
                 {
                     project_id: 1,
                     desc: 'Step 3: Clean Windows',
                     notes: 'Required:Window Cleaner',
-                    completed:false
+                    completed: false,
                 },
             ]);
         });

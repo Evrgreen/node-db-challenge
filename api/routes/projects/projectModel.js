@@ -11,9 +11,12 @@ module.exports = {
 function find() {
     return db('projects');
 }
-function findById(id) {
+async function findById(id) {
     return db('projects').where({ id });
 }
-function add() {}
+async function add(data) {
+    const [id] = await db('projects').insert(data);
+    return await findById(id);
+}
 function update() {}
 function remove() {}
