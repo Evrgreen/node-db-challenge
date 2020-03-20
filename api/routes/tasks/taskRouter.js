@@ -4,8 +4,9 @@ const Router = express.Router();
 
 Router.route('/')
     .get(async (req, res) => {
+        const id = req.projectId;
         try {
-            const tasks = await Task.find();
+            const tasks = await Task.findByProjectId(id);
             if (tasks.length > 0) {
                 res.status(200).json(tasks);
             } else {
@@ -29,20 +30,26 @@ Router.route('/')
             });
         }
     });
-Router.route('/:id').get(async (req, res) => {
-    const id = req.params.id;
-    try {
-        const [task] = await Task.findById(id);
-        console.log(task);
-        task
-            ? res.status(200).json(task)
-            : res.status(400).send('cannot find a task with that ID');
-    } catch (error) {
-        res.status(500).json({
-            message: `an error occurred while processing that request ${error}`,
-        });
-    }
-});
+Router.route('/:id')
+    .get(async (req, res) => {
+        const id = req.params.id;
+        try {
+            const [task] = await Task.findById(id);
+            console.log(task);
+            task
+                ? res.status(200).json(task)
+                : res.status(400).send('cannot find a task with that ID');
+        } catch (error) {
+            res.status(500).json({
+                message: `an error occurred while processing that request ${error}`,
+            });
+        }
+    })
+    .put(async (req, res) => {
+        const newTask = await Task.update(req.params.id, req.body);
+        console.log(newTask)
+        res.status(200).json(newTask)
+    });
 module.exports = Router;
 
 function ValidateTask(req, res, next) {
